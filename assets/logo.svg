@@ -1,0 +1,17 @@
+<svg viewBox="35 290 1050 230" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+
+  <!-- Main Logo Group -->
+  <g id="logo-group">
+    <!-- "HYDRO HARMONY" - Dark Navy Text -->
+    <text x="50" y="420" font-family="Arial, sans-serif" font-size="110" font-weight="bold" fill="#003E7E"
+      letter-spacing="2">
+      HYDRO HARMONY
+    </text>
+
+    <!-- "POOL MAINTENANCE" - Bright Cyan Text -->
+    <text x="50" y="490" font-family="Arial, sans-serif" font-size="65" font-weight="bold" fill="#00D9FF"
+      letter-spacing="2">
+      POOL MAINTENANCE
+    </text>
+  </g>
+</svg>
