@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const emailjs = require('@emailjs/nodejs');
 require('dotenv').config();
 
@@ -14,15 +15,32 @@ app.use(cors({
     credentials: true
 }));
 
+// Debug: Log directory and files
+const projectRoot = __dirname;
+console.log('🗂️  Project root:', projectRoot);
+console.log('📁 Contents of project root:');
+try {
+    const files = fs.readdirSync(projectRoot);
+    files.forEach(f => console.log('   -', f));
+} catch (err) {
+    console.error('❌ Error reading directory:', err.message);
+}
+
 // Serve static files from project root
 const staticPath = path.join(__dirname);
 console.log('📁 Serving static files from:', staticPath);
 app.use(express.static(staticPath));
 
 // Explicit routes for static assets (fallback)
-app.use('/css', express.static(path.join(__dirname, 'css')));
-app.use('/js', express.static(path.join(__dirname, 'js')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/css', express.static(path.join(__dirname, 'css'), { dotfiles: 'allow' }));
+app.use('/js', express.static(path.join(__dirname, 'js'), { dotfiles: 'allow' }));
+app.use('/assets', express.static(path.join(__dirname, 'assets'), { dotfiles: 'allow' }));
+
+// Debug middleware - log all requests
+app.use((req, res, next) => {
+    console.log(`📍 ${req.method} ${req.path}`);
+    next();
+});
 
 // Initialize EmailJS
 emailjs.init({
