@@ -14,4 +14,5 @@ build/
 
 PROJECT-STRUCTURE.md
 README-BACKEND.md
-vercel.json
+.vercel
+.env*

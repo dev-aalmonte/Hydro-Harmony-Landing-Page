@@ -15,7 +15,14 @@ app.use(cors({
 }));
 
 // Serve static files from project root
-app.use(express.static(path.join(__dirname)));
+const staticPath = path.join(__dirname);
+console.log('📁 Serving static files from:', staticPath);
+app.use(express.static(staticPath));
+
+// Explicit routes for static assets (fallback)
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // Initialize EmailJS
 emailjs.init({
@@ -25,7 +32,9 @@ emailjs.init({
 
 // Root endpoint - serve index.html from pages folder
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'pages', 'index.html'));
+    const indexPath = path.join(__dirname, 'pages', 'index.html');
+    console.log('📄 Serving index.html from:', indexPath);
+    res.sendFile(indexPath);
 });
 
 // Health check endpoint
@@ -88,9 +97,17 @@ app.post('/api/send-email', async (req, res) => {
     }
 });
 
+// Log 404 requests for debugging
+app.use((req, res, next) => {
+    console.log(`⚠️  404 - File not found: ${req.method} ${req.path}`);
+    next();
+});
+
 // Fallback to index.html for any unmatched routes (SPA support)
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'pages', 'index.html'));
+    const indexPath = path.join(__dirname, 'pages', 'index.html');
+    console.log(`↩️  Fallback: Serving index.html for route: ${req.path}`);
+    res.sendFile(indexPath);
 });
 
 // Error handler
